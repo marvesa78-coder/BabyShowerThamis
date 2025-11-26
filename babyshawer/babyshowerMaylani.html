@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Invitación Baby Shower - Maileny</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  .ubicacion h2{
+    text-align:center;
+    font-size:2rem;
+    margin-bottom:10px;
+  }
+  .mapa-container{
+    width:100%;
+    max-width:900px;
+    margin:0 auto;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 0 20px rgba(0,0,0,0.15);
+  }
+  .link-maps{
+    text-align:center;
+    margin-top:15px;
+  }
+  .link-maps a{
+    font-size:1.2rem;
+    color:#d06b9a;
+    font-weight:bold;
+    text-decoration:none;
+  }
+:root{
+  --bg-1: #ffd8ee; --bg-2:#ffdfec; --accent:#fed7e7; --gold:#b68a59; --muted:#6b4a4a;
+  --glass: rgba(255,255,255,0.7);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter, 'Segoe UI', Times New Roman, Bell MT, sans-serif;color:var(--muted);
+  background: linear-gradient(180deg,var(--bg-1),var(--bg-2));-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.container{max-width:1100px;margin:18px auto;padding:18px}
+.card{background:linear-gradient(180deg, rgba(253, 230, 255, 0.952), rgba(255,255,255,0.75));
+  border-radius:20px;padding:26px;box-shadow:0 14px 40px rgba(0,0,0,0.08);position:relative;overflow:visible}
+.header-row{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.title{font-family:'Brush Script MT',cursive;font-size:48px;color:var(--gold);margin:0}
+.lead{margin:6px 0 0;font-size:16px}
+.invite-image{width:320px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.09)}
+.info{min-width:260px}
+.meta{color:#5a3f3f}
+.date-pill{display:inline-block;background:var(--glass);padding:10px 14px;border-radius:12px;margin-right:8px}
+.controls{display:flex;gap:10px;margin-top:14px}
+.btn{background:var(--gold);color:rgb(252, 222, 248);border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:2px solid var(--gold);color:var(--gold)}
+
+/* premium accents */
+.ribbon{position:absolute;right:24px;top:-10px;background:linear-gradient(90deg,#ffd7e6,#ffb6d2);padding:8px 14px;border-radius:12px;font-weight:700;color:#6b3b3b;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+
+/* animals */
+.animal{position:absolute;z-index:6;cursor:pointer;border-radius:12px;box-shadow:0 8px 18px rgba(0,0,0,0.08);transition:transform .4s,filter .3s}
+.animal.small{width:80px}
+.animal.med{width:100px}
+.animal.lg{width:130px}
+@keyframes floatA{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}
+@keyframes floatB{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(4deg)}100%{transform:translateY(0) rotate(0deg)}}
+@keyframes floatC{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.03)}100%{transform:translateY(0) scale(1)}}
+@keyframes bounce{0%{transform:translateY(0)}30%{transform:translateY(-26px)}60%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+
+/* float utility class used to restart animations */
+.float { animation-play-state: running; }
+
+/* globos  */
+#balloons{position:fixed;inset:0;pointer-events:none;z-index:20}
+.balloon{position:absolute;border-radius:50%;opacity:.95;box-shadow:inset -6px -10px 20px rgba(255,255,255,0.18)}
+
+/* confetti */
+.confetti{position:fixed;pointer-events:none;z-index:9999}
+@keyframes confFall{to{transform:translateY(110vh) rotate(360deg);opacity:0.2}}
+
+/* layout sections */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+.card-section{background:rgba(255,255,255,0.8);padding:16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.04)}
+.section-title{font-weight:700;margin-bottom:8px;color:var(--gold)}
+.input,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+.gallery{display:flex;gap:8px;overflow:auto}
+.gallery img{height:140px;border-radius:10px;cursor:pointer}
+.map{height:220px;border-radius:12px;overflow:hidden}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(10px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+
+/* audio prompt */
+#audio-prompt{position:fixed;left:12px;bottom:12px;background:linear-gradient(90deg,#fff,#ffeef6);padding:10px 14px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.12);z-index:1000}
+
+/* lightbox */
+#lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);z-index:10000}
+#lightbox img{max-width:90%;max-height:90%;border-radius:20px;box-shadow:0 0 30px rgba(255,150,200,0.8);animation:zoomIn .4s ease}
+@keyframes zoomIn{from{transform:scale(.98);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* small responsive */
+@media(max-width:800px){.grid{grid-template-columns:1fr}.title{font-size:34px}.invite-image{width:220px}}
+
+/* contenido  */
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="ribbon">Baby Shower</div>
+    <div class="header-row">
+      <div class="info">
+        <h1 class="title">Nan Mena Mailany Estrada Bravo</h1>
+        <p class="lead">¡Nuestra princesa llegará muy pronto!<br>Te invitamos a celebrar con nosotros. 🎀</p>
+        <p class="title">Padres:<br> Armando Estrada Sanchez 🎀 <br> Miriam Themis Alonso Bravo 🎀</p>
+
+        <div style="margin-top:10px">
+          <span class="date-pill">Sábado</span>
+          <span class="date-pill" id="event-date-pill">7 Feb 2026 • 7:00 PM</span>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="rsvp-btn">Confirmar asistencia</button>
+          <!-- boton descarga id esperado por JS -->
+          <button class="btn ghost" id="download-pdf">Descargar</button>
+        </div>
+      </div>
+
+      <img class="invite-image" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\invitacion.png" alt="Mailany" />
+    </div>
+
+    <!-- animales -->
+    <img class="animal lg animalito" id="a1" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\patitas.png" style="top:8%;left:20%;animation:floatA 6s ease-in-out infinite">
+    <img class="animal med animalito" id="a2" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\conejo.png" style="top:16%;right:36%;animation:floatB 7s ease-in-out infinite">
+    <img class="animal small animalito" id="a3" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\oso.png" style="top:36%;left:10%;animation:floatC 5s ease-in-out infinite">
+    <img class="animal med animalito" id="a4" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\bloques.png" style="bottom:8%;right:12%;animation:floatA 6.5s ease-in-out infinite">
+    <img class="animal small animalito" id="a5" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\osooo0.png" style="bottom:22%;left:35%;animation:floatB 6.2s ease-in-out infinite">
+    <img class="animal lg animalito" id="a6" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\baby.png" style="top:52%;left:48%;animation:floatC 8s ease-in-out infinite">
+     <img class="animal lg animalito" id="a6" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\globoscorazon.png" style="top:35%;left:60%;animation:floatC 8s ease-in-out infinite">
+<!-- Duenta regresiva -->
+    <div class="grid" style="margin-top:24px">
+      <div class="card-section reveal">
+        <div class="section-title">Cuenta regresiva</div>
+        <div id="countdown-large" style="font-size:20px;font-weight:700">Calculando...</div>
+      </div>
+         <!-- Ubicación -->
+      <div class="card-section reveal">
+        <div class="section-title">Ubicación</div>
+        <p class="meta">Colonia San Isidro Calle Norte 5</p>
+        <div id="map" class="map"></div>
+        <!-- Mapa embed alternativo dinámico -->
+        <div id="dynamic-map" style="margin-top:8px"></div>
+      </div>
+<!-- lista de regalos -->
+      <div class="card-section reveal">
+        <div class="section-title">Lista de regalos</div>
+        <ul>
+          <li>Paquetes de pañales y toallitas húmedas</li>
+          <li>Ropita de ñiña 0-3 meses</li>
+          <li>Muselinas, mantas suaves o cobijas ligeras</li>
+          <li>Set de higiene para bebé</li>
+          <li>Set de biberones o chupetes</li>
+          <li>Bolso o pañalera de maternidad</li>
+          <li>Cojín de lactancia</li>
+          <li>Alfombra de juegos o gimnasio para bebé</li>
+          <li>Kit de cuidado y salud infantil</li>
+          <li>Juguetes suaves o mordedores apropiados</li>
+          <li>Un artículo práctico o decorativo para la habitación de la bebé</li>
+        </ul>
+      </div>
+<!-- Mensajes para la mamá -->
+      <div class="card-section reveal">
+        <div class="section-title">Mensaje para la mamá</div>
+        <textarea id="mensaje" placeholder="Escribe un mensaje de cariño" style="min-height:120px"></textarea>
+        <button class="btn" id="send-msg" style="margin-top:8px">Enviar mensaje</button>
+      </div>
+<!-- gallery-img que usa el lightbox -->
+      <div class="card-section reveal" style="grid-column:1 / -1">
+        <div class="section-title">Galería de los padres</div>
+        <div class="gallery" id="parents-gallery">
+          
+          <img class="gallery-img floating-img" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\ejemplo1.jpg" alt="Padre" />
+          <img class="gallery-img floating-img" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\pareja2.0.jpg" alt="Madre" />
+          <img class="gallery-img floating-img" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\pareja.jpg" alt="Familia" />
+          <img class="gallery-img floating-img" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\ejemplo 2.jpg" alt="Familia" />
+          <img class="gallery-img floating-img" src="C:\Users\DELL\OneDrive\Documentos\babyshawer\ejemplo 3.jpg" alt="Familia" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="balloons"></div>
+<div id="audio-prompt" style="display:none">Toca para activar sonido ▶️</div>
+
+<!-- Dependencias externas necesarias (html2canvas, jspdf) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="" crossorigin="anonymous"></script>
+
+<!-- Google Maps API (reemplaza YOUR_API_KEY por la tuya). Use callback=initMap -->
+<script async defer src="https://maps.app.goo.gl/emnhq53GSHdc2F9P8"></script>
+
+<script>
+/* =========================================================
+     UTILIDADES Y CONFIGURACIÓN UNIFICADA
+   ========================================================= */
+
+// Helper: reproducir audio de forma segura (ignora errores de autoplay)
+function tryPlayAudio(audio){
+  if(!audio) return Promise.resolve();
+  try {
+    const p = audio.play();
+    if(p && p.catch) p.catch(()=>{});
+    return p;
+  } catch(e) {
+    return Promise.resolve();
+  }
+}
+
+// --- Audio: optimizado (carga como blob) ---
+const touchSound = new Audio('touch.mp3');
+const ambient = new Audio();
+ambient.loop = true;
+ambient.volume = 0.45;
+
+let audioUnlocked = false;
+const audioPrompt = document.getElementById('audio-prompt');
+
+async function loadOptimizedAudio(url){
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const obj = URL.createObjectURL(blob);
+    ambient.src = obj;
+  } catch(e){
+    // Fallback: asigna directamente si fetch falla
+    ambient.src = url;
+  }
+}
+// Cargar audio ligero por defecto 
+loadOptimizedAudio('C:\Users\DELL\OneDrive\Documentos\babyshawer\fondo.mp3').catch(()=>loadOptimizedAudio('C:\Users\DELL\OneDrive\Documentos\babyshawer\fondo.mp3'));
+
+// Desbloqueo seguro de audio
+function unlockAudio(){
+  if(audioUnlocked) return;
+  audioUnlocked = true;
+  audioPrompt.style.display = 'none';
+  tryPlayAudio(ambient);
+}
+
+// show prompt on load
+window.addEventListener('load', ()=>{
+  audioPrompt.style.display = 'block';
+  audioPrompt.addEventListener('click', unlockAudio);
+  // tocar una vez para desbloquear si el usuario interactúa en otra parte
+  document.addEventListener('click', unlockAudio, {once:true});
+  document.addEventListener('touchstart', unlockAudio, {once:true});
+});
+
+/* =========================================================
+       GLOBOS Y CONFETTI
+   ========================================================= */
+
+const balloonsContainer = document.getElementById('balloons');
+
+function randomInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+
+function createBalloon(i){
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  const size = randomInt(30,120);
+  b.style.width = size + 'px';
+  b.style.height = Math.round(size*1.15) + 'px';
+  b.style.left = (Math.random()*100) + 'vw';
+  b.style.top = (110 + Math.random()*20) + 'vh'; // start off-screen bottom
+  b.style.background = `linear-gradient(135deg, rgba(255,${randomInt(160,220)},${randomInt(180,230)},1), rgba(255,${randomInt(200,230)},${randomInt(200,240)},1))`;
+  b.style.opacity = 0.95;
+  b.style.transition = `transform ${randomInt(8,18)}s linear, top ${randomInt(8,18)}s linear`;
+  balloonsContainer.appendChild(b);
+  // animate upward
+  requestAnimationFrame(()=> {
+    b.style.top = ( -randomInt(10,40) ) + 'vh';
+    b.style.transform = `translateY(-${randomInt(20,60)}vh)`;
+  });
+  // cleanup
+  setTimeout(()=> b.remove(), randomInt(9000,20000));
+}
+
+// generar 30 globos al entrar
+function spawnBalloons(count=30){
+  for(let i=0;i<count;i++){
+    setTimeout(()=>createBalloon(i), randomInt(50,800)*i/10);
+  }
+}
+spawnBalloons(30); // comportamiento deseado: 30 cada vez que se entra (puedes repetir si quieres)
+
+/* Confetti (efecto en clic) */
+function emitConfetti(x = window.innerWidth / 2, y = window.innerHeight / 2, amount = 40) {
+  for (let i = 0; i < amount; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    const size = randomInt(6, 14);
+    c.style.width = size + 'px';
+    c.style.height = (size * 0.6) + 'px';
+    c.style.left = (x + randomInt(-100, 100)) + 'px';
+    c.style.top = (y + randomInt(-40, 40)) + 'px';
+    c.style.borderRadius = (Math.random() > 0.5 ? '2px' : '50%');
+    c.style.transform = `rotate(${randomInt(0, 360)}deg)`;
+    c.style.background = ['#ffd6e8', '#ffb6d2', '#ffcce3', '#ffdfee'][Math.floor(Math.random() * 4)];
+    c.style.animation = `confFall ${randomInt(1800, 4000)}ms linear forwards`;
+    c.style.zIndex = 9999;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), randomInt(1900, 4200));
+  }
+}
+
+//
+// ⭐ NUEVO: lluvia de confeti desde arriba al entrar a la página
+//
+window.addEventListener("load", () => {
+  const drops = 100; // cantidad de confeti inicial
+  for (let i = 0; i < drops; i++) {
+    const x = randomInt(0, window.innerWidth); // ancho total
+    const y = randomInt(-200, -20);            // empieza fuera de la pantalla arriba
+    emitConfetti(x, y, 1);                     // un confeti por posición
+  }
+});
+
+
+/* =========================================================
+   📍 GOOGLE MAPS Y MAPA EMBED (dinámico)
+   ========================================================= */
+
+// initMap será llamada por el callback del script de Google Maps
+function initMap(){
+  try {
+    const coord = {lat:19.287722, lng:-98.929194}; // ajusta si quieres otra ubicación
+    const map = new google.maps.Map(document.getElementById('map'),{
+      zoom:17,
+      center:coord,
+      disableDefaultUI:true,
+      styles:[{ featureType:"poi", stylers:[{ visibility:"off" }] }]
+    });
+    new google.maps.Marker({position:coord, map:map});
+  } catch(e){
+    // si falla (p. ej. clave inválida), muestra el iframe embed como fallback (ya creado más abajo)
+    console.warn('Google Maps no pudo inicializarse', e);
+  }
+}
+
+// iframe dinámico (embed) — id dynamic-map ya existe en HTML
+(function insertEmbedMap(){
+  const dynamicMap = document.getElementById('dynamic-map');
+  if(!dynamicMap) return;
+  dynamicMap.innerHTML = `
+  <iframe width="100%" height="300px" style="border:0; border-radius:12px;" loading="lazy" allowfullscreen
+  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d150.00000000000003!2d-98.929194!3d19.287722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1732490000000">
+  </iframe>`;
+  
+})();
+
+/* =========================================================
+   🖼 LIGHTBOX + GALERÍA + ANIMACIONES PREMIUM + SECUENCIA
+   ========================================================= */
+
+// Lightbox
+let lightbox;
+function openLightbox(src){
+  if(!lightbox){
+    lightbox = document.createElement('div');
+    lightbox.id = 'lightbox';
+    lightbox.addEventListener('click', ()=> lightbox.remove());
+    document.body.appendChild(lightbox);
+  }
+  lightbox.innerHTML = `<img src="${src}" alt="Imagen grande">`;
+}
+
+// seleccionar todas las imágenes de la galería
+const galleryImgs = document.querySelectorAll('.gallery-img');
+
+galleryImgs.forEach(img=>{
+  img.addEventListener('click', ()=> openLightbox(img.src));
+});
+
+// Hover glow y rebote premium
+document.querySelectorAll('.floating-img, .animalito, .gallery-img').forEach(el => {
+  el.style.transition = 'transform 0.25s ease, filter 0.35s ease, opacity 0.8s ease';
+  el.addEventListener('mouseenter', ()=>{
+    el.style.filter = 'drop-shadow(0 0 12px pink) brightness(1.08)';
+    el.style.transform = 'scale(1.07)';
+  });
+  el.addEventListener('mouseleave', ()=>{
+    el.style.filter = '';
+    el.style.transform = '';
+  });
+});
+
+/* Inyectar keyframes premiumBounce, float3D y fadeInOut */
+(function injectPremiumAnim(){
+  const premiumBounce = `@keyframes premiumBounce {
+    0% { transform: translateY(0); }
+    30% { transform: translateY(-18px); }
+    60% { transform: translateY(6px); }
+    100% { transform: translateY(0); }
+  }`;
+
+  const float3D = `@keyframes float3D {
+    0% { transform: translateY(0) rotateZ(0deg); }
+    50% { transform: translateY(-10px) rotateZ(1.5deg); }
+    100% { transform: translateY(0) rotateZ(0deg); }
+  }`;
+
+  const fadeInOut = `@keyframes fadeInOut {
+    0% { opacity: 0; transform: scale(0.9); }
+    10% { opacity: 1; transform: scale(1); }
+    90% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.9); }
+  }`;
+
+  const s = document.createElement('style');
+  s.innerHTML = `${premiumBounce} ${float3D} ${fadeInOut}`;
+  document.head.appendChild(s);
+
+  // aplicar animaciones premium a TODO
+  const elements = document.querySelectorAll('.animalito, .floating-img, .gallery-img');
+
+  elements.forEach(el => {
+    el.style.animation = (el.style.animation || '') + ' float3D 4s ease-in-out infinite';
+
+    setTimeout(() => {
+      el.style.animation += `, premiumBounce ${4 + Math.random() * 3}s ease-in-out infinite`;
+    }, Math.random() * 500);
+  });
+})();
+
+/* =========================================================
+   🎞 SECUENCIA DE IMÁGENES DE GALERÍA (UNA POR UNA)
+   ========================================================= */
+
+// inicia cuando la página carga
+window.addEventListener("load", () => {
+  if (galleryImgs.length === 0) return;
+
+  let index = 0;
+
+  // Oculta todas las imágenes al iniciar
+  galleryImgs.forEach(img => { img.style.opacity = 0; });
+
+  function showNext(){
+    // Ocultar todas
+    galleryImgs.forEach(img => img.style.animation = '');
+
+    // Mostrar solo la siguiente
+    const current = galleryImgs[index];
+    current.style.animation = "fadeInOut 3s ease forwards";
+
+    index++;
+
+    // Cuando termina la secuencia, mostrar todas juntas
+    if(index >= galleryImgs.length){
+      setTimeout(()=>{
+        galleryImgs.forEach(img=>{
+          img.style.opacity = 1;
+          img.style.animation = "float3D 4s ease-in-out infinite, premiumBounce 5s ease-in-out infinite";
+        });
+      }, 3200);
+
+      return;
+    }
+
+    // Mostrar siguiente después de 3 segundos
+    setTimeout(showNext, 3000);
+  }
+
+  // Comenzar secuencia
+  setTimeout(showNext, 800);
+});
+
+
+/* =========================================================
+   📄 BOTÓN DESCARGAR PDF (html2canvas + jsPDF)
+   ========================================================= */
+
+const pdfBtn = document.getElementById('download-pdf');
+if(pdfBtn){
+  pdfBtn.addEventListener('click', async ()=>{
+    // Indica visualmente que está creando el PDF
+    pdfBtn.textContent = 'Generando PDF...';
+    try{
+      const element = document.body;
+      // html2canvas
+      const canvas = await html2canvas(element, {scale: 1.2, useCORS:true, allowTaint:true});
+      const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','mm','a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.addImage(imgData,'PNG',0,0,imgWidth,imgHeight);
+      pdf.save('Invitacion_BabyShower.pdf');
+    }catch(e){
+      console.error(e);
+      alert('Error al generar PDF. Intenta usar otro navegador o revisar las imágenes externas.');
+    } finally {
+      pdfBtn.textContent = 'Descargar';
+    }
+  });
+}
+
+/* =========================================================
+   ⏱️ CUENTA REGRESIVA
+   ========================================================= */
+
+function startCountdown(targetISO){
+  const el = document.getElementById('countdown-large');
+  if(!el) return;
+  function update(){
+    const now = new Date();
+    const target = new Date(targetISO);
+    const diff = target - now;
+    if(diff <= 0){
+      el.textContent = '¡Hoy es la celebración! 🎉';
+      clearInterval(timer);
+      return;
+    }
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hrs = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const min = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const sec = Math.floor((diff % (1000*60)) / 1000);
+    el.textContent = `${days}d ${hrs}h ${min}m ${sec}s`;
+  }
+  update();
+  const timer = setInterval(update, 1000);
+}
+// fecha objetivo: 7 feb 2026 19:00 (zona local)
+startCountdown('2026-02-07T19:00:00');
+
+/* =========================================================
+   🐾 ANIMALES: interacción y mantener animación tras clic
+   ========================================================= */
+
+const animals = document.querySelectorAll('.animal');
+animals.forEach(a=>{
+  // Reproducir sonido al tocar animal
+  a.addEventListener('click', (ev)=>{
+    // rebote visual
+    a.style.animation = 'bounce .8s ease-out';
+    // emitir confetti breve en la posición del animal
+    const rect = a.getBoundingClientRect();
+    emitConfetti(rect.left + rect.width/2, rect.top + rect.height/2, 18);
+    tryPlayAudio(touchSound);
+    // después del rebote restauramos la animación de flotación (reiniciarla)
+    setTimeout(()=>{
+      a.style.animation = ''; // limpia para forzar reflow
+      // forzamos reflow
+      void a.offsetWidth;
+      // volver a asignar la animación original si la tenía inline
+      const original = a.getAttribute('data-original-animation');
+      if(original){
+        a.style.animation = original;
+      } else {
+        // si no había data-original, aplicamos una alternativa segura
+        a.style.animation = 'floatA 6s ease-in-out infinite';
+      }
+    }, 820);
+  });
+  // almacenar animación inicial para restaurarla más tarde
+  const initial = a.style.animation || '';
+  if(initial) a.setAttribute('data-original-animation', initial);
+});
+
+/* =========================================================
+   ✉️ Mensaje al enviar (simulación)
+   ========================================================= */
+const sendMsgBtn = document.getElementById('send-msg');
+if(sendMsgBtn){
+  sendMsgBtn.addEventListener('click', ()=>{
+    const txt = document.getElementById('mensaje').value.trim();
+    if(!txt){ alert('Escribe un mensaje antes de enviar.'); return; }
+    // aquí puedes POSTear a tu servidor; por ahora simulamos éxito
+    alert('Mensaje enviado. ¡Gracias!');
+    document.getElementById('mensaje').value = '';
+  });
+}
+
+/* =========================================================
+   ✨ TRANSICIONES ENTRE SECCIONES (IntersectionObserver)
+   ========================================================= */
+
+const sections = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add('visible');
+  });
+},{ threshold: 0.18 });
+sections.forEach(sec=> observer.observe(sec));
+
+/* =========================================================
+   🎛️ ELEMENTOS INTERACTIVOS VARIOS (RSVP, clicks globales)
+   ========================================================= */
+
+document.getElementById('rsvp-btn')?.addEventListener('click', ()=>{
+  const name = prompt('¿Tu nombre para confirmar asistencia?');
+  if(name) alert(`Gracias ${name}. ¡Te esperamos!`);
+});
+
+// reproducir un toque corto cuando el usuario pasa por la galería
+document.querySelectorAll('.floating-img').forEach(img=>{
+  img.addEventListener('click', ()=>{
+    // reactivar la animación de flotación si la hay
+    img.classList.remove('float');
+    void img.offsetWidth;
+    img.classList.add('float');
+    tryPlayAudio(touchSound);
+  });
+});
+
+/* =========================================================
+   🧩 Inicializaciones finales
+   ========================================================= */
+
+// un pequeño evento para generar confetti al presionar una tecla (para demo)
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'c' || e.key === 'C') emitConfetti(window.innerWidth/2, window.innerHeight/4, 80);
+});
+
+// Mostrar instrucción si audioLocked
+if(!audioUnlocked) audioPrompt.style.display = 'block';
+
+/* Fin del script unificado */
+</script>
+
+<script>
+  // Descargar PDF actualizado
+  document.getElementById("download-pdf").addEventListener("click", function () {
+    const link = document.createElement("a");
+    link.href = "C:\Users\DELL\OneDrive\Documentos\babyshawer\invitación.pdf"; // Nuevo nombre del PDF
+    link.download = "Invitación.pdf"; // Nombre sugerido al descargar
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+</script>
+
+
+</body>
+</html>
